@@ -20,6 +20,19 @@ void init(){
     getcontext(&main_cntx)
 }
 
+void queue_add(green_t *t){
+    green_t *list = queue;
+    if(list == NULL){
+        queue = t;
+    }
+    else{
+        while(list->next != NULL){
+            list = list->next;
+        }
+        list->next = t;
+    }
+}
+
 int green_create(green_t *new, void *(*fun)(void*), void *arg){
     ucontext_t *cntx = (ucontext_t*) malloc(sizeof(ucontext_t));
     getcontext(cntx);
@@ -37,7 +50,7 @@ int green_create(green_t *new, void *(*fun)(void*), void *arg){
     new->join = NULL;
     new->zombie = FALSE;
 
-    //add new to the ready queue
+    queue_add(new);
 
     return 0;
 }
@@ -47,7 +60,9 @@ void green_thread(){
     
     (*this->fun)(this->arg);
 
-    //place waiting (joining) thread in ready queue
+    if(this->join != NULL){
+
+    }
 
     //free alocated memory structure
 
