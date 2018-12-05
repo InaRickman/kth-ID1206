@@ -33,6 +33,14 @@ void queue_add(green_t *t){
     }
 }
 
+green_t *queue_getNext(){
+    green_t *next = queue;
+    queue = queue->next;
+    next->next = NULL;
+
+    return next;
+}
+
 int green_create(green_t *new, void *(*fun)(void*), void *arg){
     ucontext_t *cntx = (ucontext_t*) malloc(sizeof(ucontext_t));
     getcontext(cntx);
@@ -61,18 +69,18 @@ void green_thread(){
     (*this->fun)(this->arg);
 
     if(this->join != NULL){
-
+        queue_add(this->join)
     }
 
     //free alocated memory structure
+    free(this->context->uc_stack.ss_sp);
 
     //we're a zombie
+    this->zombie = TRUE;
 
     //find the next thread to run
-
-    running = next;
-
-    setcontext(next->context);
+    running = queue_getNext();
+    setcontext(running->context)
 }
 
 int green_yield(){
