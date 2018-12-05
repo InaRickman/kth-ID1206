@@ -92,7 +92,7 @@ int green_yield(){
 
     //select the next thread for execution
     running = queue_getNext();
-    swapcontext(susp->context, running->context)
+    swapcontext(susp->context, next->context)
     return 0;
 }
 
