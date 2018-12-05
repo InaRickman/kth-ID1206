@@ -12,7 +12,7 @@ static green_t main_green = {&main_cntx, NULL, NULL, NULL, NULL, FALSE};
 
 static green_t *running = &main_green;
 
-static green_t *queue = NULL
+static green_t *queue = NULL;
 
 static void init() __attribute__((constructor));
 
