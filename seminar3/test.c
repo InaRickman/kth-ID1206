@@ -24,5 +24,4 @@ int main(){
     green_join(&g1);
     printf("done\n");
     return 0;
-    )
 }
