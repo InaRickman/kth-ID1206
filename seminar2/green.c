@@ -85,12 +85,14 @@ void green_thread(){
 
 int green_yield(){
     green_t * susp = running;
+
     //add susp to ready queue
+    queue_add(susp);
 
-    //select the enxt thread for execution
 
-    running = next;
-    swapcontext(susp->context, next->context)
+    //select the next thread for execution
+    running = queue_getNext();
+    swapcontext(susp->context, running->context)
     return 0;
 }
 
