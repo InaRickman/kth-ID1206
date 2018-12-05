@@ -17,7 +17,7 @@ static green_t *queue = NULL
 static void init() __attribute__((constructor));
 
 void init(){
-    getcontext(&main_cntx)
+    getcontext(&main_cntx);
 }
 
 void queue_add(green_t *t){
@@ -50,7 +50,7 @@ int green_create(green_t *new, void *(*fun)(void*), void *arg){
     cntx->uc_stack.ss_sp = stack;
     cntx->uc_stack.ss_size = STACK_SIZE;
 
-    makecontext(cntx, green_thread, 0)
+    makecontext(cntx, green_thread, 0);
     new->context = cntx;
     new->fun = fun;
     new->arg = arg;
@@ -69,7 +69,7 @@ void green_thread(){
     (*this->fun)(this->arg);
 
     if(this->join != NULL){
-        queue_add(this->join)
+        queue_add(this->join);
     }
 
     //free alocated memory structure
@@ -81,7 +81,7 @@ void green_thread(){
     //find the next thread to run
     green_t *next = queue_getNext();
     running = next;
-    setcontext(next->context)
+    setcontext(next->context);
 }
 
 int green_yield(){
@@ -94,7 +94,7 @@ int green_yield(){
     //select the next thread for execution
     green_t *next = queue_getNext();
     running = next;
-    swapcontext(susp->context, next->context)
+    swapcontext(susp->context, next->context);
     return 0;
 }
 
@@ -112,6 +112,6 @@ int green_join(green_t *thread){
     running = next;
     swapcontext(susp->context, next->context);
 
-    return 0:
+    return 0;
 }
 
