@@ -79,8 +79,9 @@ void green_thread(){
     this->zombie = TRUE;
 
     //find the next thread to run
-    running = queue_getNext();
-    setcontext(running->context)
+    green_t *next = queue_getNext();
+    running = next;
+    setcontext(next->context)
 }
 
 int green_yield(){
@@ -91,7 +92,8 @@ int green_yield(){
 
 
     //select the next thread for execution
-    running = queue_getNext();
+    green_t *next = queue_getNext();
+    running = next;
     swapcontext(susp->context, next->context)
     return 0;
 }
@@ -103,9 +105,10 @@ int green_join(green_t *thread){
     
     green_t *susp = running;
     //add to waiting threads
+    thread->join = susp;
 
     //select the next thread for execution
-
+    green_t *next = queue_getNext();
     running = next;
     swapcontext(susp->context, next->context);
 
